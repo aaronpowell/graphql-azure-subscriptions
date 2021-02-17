@@ -78,7 +78,7 @@ export class SignalRClient {
     return this.connection.start();
   }
 
-  public on(triggerName: string, handler: (...args: any[]) => void) {
+  public on(triggerName: string, handler: (...args: unknown[]) => void) {
     this.connection.on(triggerName, handler);
   }
 

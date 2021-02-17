@@ -3,7 +3,7 @@ import { SignalRClient } from "./SignalRClient.js";
 
 export class SignalRPubSub extends PubSubEngine {
   private client: SignalRClient;
-  private handlerMap = new Map<Number, Function>();
+  private handlerMap = new Map<number, (...args: unknown[]) => void>();
   constructor(signalRConnectionString: string) {
     super();
     this.client = SignalRClient.fromConnectionString(signalRConnectionString);
@@ -11,13 +11,12 @@ export class SignalRPubSub extends PubSubEngine {
   public start() {
     return this.client.start();
   }
-  publish(triggerName: string, payload: any): Promise<void> {
+  publish<T>(triggerName: string, payload: T): Promise<void> {
     return this.client.send(triggerName, payload);
   }
   subscribe(
     triggerName: string,
-    onMessage: Function,
-    options: Object
+    onMessage: (...args: unknown[]) => void
   ): Promise<number> {
     this.client.on(triggerName, (args) => {
       onMessage(args);
