@@ -1,0 +1,52 @@
+{
+  "name": "@aaronpowell/graphql-signalr-subscriptions",
+  "private": false,
+  "version": "0.1.0",
+  "main": "./dist/esm/SignalRPubSub.js",
+  "exports": {
+    "import": "./dist/esm/SignalRPubSub.js",
+    "require": "./dist/cjs/SignalRPubSub.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "build:all": "npm run build && npm run build:cjs",
+    "watch": "tsc -w",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [],
+  "author": {
+    "email": "me+github@aaron-powell.com",
+    "name": "Aaron Powell",
+    "url": "https://www.aaron-powell.com"
+  },
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/node-fetch": "^2.5.8",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^5.0.9",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.5"
+  },
+  "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
+    "graphql-subscriptions": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}

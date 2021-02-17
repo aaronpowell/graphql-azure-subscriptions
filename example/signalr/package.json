@@ -1,0 +1,27 @@
+{
+  "name": "signalr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@aaronpowell/graphql-signalr-subscriptions": "file:../../packages/graphql-signalr-subscriptions",
+    "apollo-server": "^2.21.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^15.5.0",
+    "graphql-import": "^1.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.5"
+  }
+}

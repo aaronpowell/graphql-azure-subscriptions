@@ -1,0 +1,12 @@
+type Query {
+  hello: String!
+}
+
+type Subscription {
+  getMessage: String!
+}
+
+schema {
+  query: Query
+  subscription: Subscription
+}
