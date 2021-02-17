@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: package
-            path: "react-foldable/*.tgz"
+            path: "packages/graphql-signalr-subscriptions/*.tgz"
 
   publish:
     name: "Publish to GitHub Packages"
