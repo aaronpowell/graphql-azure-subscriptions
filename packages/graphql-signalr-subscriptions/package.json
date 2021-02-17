@@ -18,14 +18,18 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "rm -rf dist"
   },
-  "keywords": [],
+  "keywords": [
+    "azure",
+    "graphql",
+    "websockets"
+  ],
   "author": {
     "email": "me+github@aaron-powell.com",
     "name": "Aaron Powell",
     "url": "https://www.aaron-powell.com"
   },
   "license": "MIT",
-  "description": "",
+  "description": "A GraphQL subscriptions library using Azure SignalR Service",
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node-fetch": "^2.5.8",
@@ -48,5 +52,13 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aaronpowell/graphql-azure-subscriptions"
+  },
+  "bugs": {
+    "url": "https://github.com/aaronpowell/graphql-azure-subscriptions/issues"
+  },
+  "homepage": "https://github.com/aaronpowell/graphql-azure-subscriptions"
 }
