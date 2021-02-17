@@ -37,7 +37,7 @@ jobs:
       - run: |
           npm ci
           npm run lint
-          npm run build
+          npm run build:all
           npm pack
       - name: Upload
         uses: actions/upload-artifact@v2
