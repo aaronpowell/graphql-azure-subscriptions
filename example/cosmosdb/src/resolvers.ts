@@ -1,14 +1,14 @@
 import { CosmosDBPubSub } from "@aaronpowell/graphql-cosmosdb-subscriptions";
+import { CosmosClient } from "@azure/cosmos";
 import dotenv from "dotenv";
 import { Message, MessageDataSource } from "./data";
-import { Resolvers } from "./types";
 
 dotenv.config();
 
 export const cosmosPubSub = new CosmosDBPubSub(
-  process.env.COSMOS_CONNECTION_STRING || "",
-  process.env.COSMOS_DB || "",
-  process.env.COSMOS_CONTAINER || ""
+  new CosmosClient(process.env.COSMOS_CONNECTION_STRING || "")
+    .database(process.env.COSMOS_DB || "")
+    .container(process.env.COSMOS_CONTAINER || "")
 );
 
 export const resolvers = {

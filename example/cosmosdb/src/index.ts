@@ -1,9 +1,15 @@
+import { CosmosClient } from "@azure/cosmos";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchemaSync } from "@graphql-tools/load";
+import { addResolversToSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server";
-import { importSchema } from "graphql-import";
+import dotenv from "dotenv";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import { MessageDataSource } from "./data.js";
 import { resolvers } from "./resolvers.js";
-import dotenv from "dotenv";
-import { CosmosClient } from "@azure/cosmos";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 const messages = new MessageDataSource(
@@ -11,9 +17,18 @@ const messages = new MessageDataSource(
     .database(process.env.COSMOS_DB || "")
     .container(process.env.COSMOS_CONTAINER || "")
 );
-const server = new ApolloServer({
-  typeDefs: importSchema("./schema.graphql"),
+
+const schema = loadSchemaSync(join(__dirname, "..", "schema.graphql"), {
+  loaders: [new GraphQLFileLoader()],
+});
+
+const schemaWithResolvers = addResolversToSchema({
+  schema,
   resolvers,
+});
+
+const server = new ApolloServer({
+  schema: schemaWithResolvers,
   dataSources: () => ({
     messages,
   }),

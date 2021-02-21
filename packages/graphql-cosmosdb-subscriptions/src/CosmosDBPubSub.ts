@@ -3,22 +3,14 @@ import {
   ChangeFeedIterator,
   ChangeFeedResponse,
   Container,
-  CosmosClient,
 } from "@azure/cosmos";
 
 export class CosmosDBPubSub extends PubSubEngine {
-  private client: CosmosClient;
-  private container: Container;
   private changeFeedSubscriptionTracking = new Map<number, boolean>();
   constructor(
-    cosmosDBConnectionString: string,
-    database: string,
-    container: string
+    private container: Container
   ) {
     super();
-
-    this.client = new CosmosClient(cosmosDBConnectionString);
-    this.container = this.client.database(database).container(container);
   }
   publish(triggerName: string, payload: any): Promise<void> {
     throw new Error(

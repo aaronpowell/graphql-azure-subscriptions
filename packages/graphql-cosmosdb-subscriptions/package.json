@@ -10,9 +10,9 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "build:all": "npm run build && npm run build:cjs",
+    "build": "npm run build:esm && npm run build:cjs",
     "watch": "tsc -w",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",

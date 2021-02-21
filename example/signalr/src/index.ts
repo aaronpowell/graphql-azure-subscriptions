@@ -1,10 +1,24 @@
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchemaSync } from "@graphql-tools/load";
+import { addResolversToSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server";
-import { importSchema } from "graphql-import";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import { resolvers, signalrPubSub } from "./resolvers.js";
 
-const server = new ApolloServer({
-  typeDefs: importSchema("./schema.graphql"),
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const schema = loadSchemaSync(join(__dirname, "..", "schema.graphql"), {
+  loaders: [new GraphQLFileLoader()],
+});
+
+const schemaWithResolvers = addResolversToSchema({
+  schema,
   resolvers,
+});
+
+const server = new ApolloServer({
+  schema: schemaWithResolvers,
 });
 
 // The `listen` method launches a web server.
@@ -14,5 +28,5 @@ server.listen().then(({ url }) => {
   signalrPubSub
     .start()
     .then(() => console.log("signalr up and running"))
-    .catch((err) => console.error(err));
+    .catch((err: any) => console.error(err));
 });
