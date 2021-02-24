@@ -85,7 +85,7 @@ jobs:
         registry-url: https://npm.pkg.github.com/
         scope: "@aaronpowell"
     - run: echo "registry=https://npm.pkg.github.com/@aaronpowell" >> .npmrc
-    - run: ls
+    - run: ls *.tgz
     - run: ls *.tgz | xargs npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
