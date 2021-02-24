@@ -7,20 +7,17 @@ import {
 
 export class CosmosDBPubSub extends PubSubEngine {
   private changeFeedSubscriptionTracking = new Map<number, boolean>();
-  constructor(
-    private container: Container
-  ) {
+  constructor(private container: Container) {
     super();
   }
-  publish(triggerName: string, payload: any): Promise<void> {
+  publish(): Promise<void> {
     throw new Error(
       "Can't directly publish, instead modify data in the cosmos container"
     );
   }
   subscribe(
     triggerName: string,
-    onMessage: Function,
-    options: Object
+    onMessage: (...args: unknown[]) => void
   ): Promise<number> {
     const feed = this.container.items.changeFeed(triggerName, {
       startTime: new Date(),
@@ -37,10 +34,10 @@ export class CosmosDBPubSub extends PubSubEngine {
 
   private onFetchNext(
     id: number,
-    feed: ChangeFeedIterator<any>,
-    onMessage: Function
+    feed: ChangeFeedIterator<unknown>,
+    onMessage: (...args: unknown[]) => void
   ) {
-    return ({ result }: ChangeFeedResponse<any[]>) => {
+    return ({ result }: ChangeFeedResponse<unknown[]>) => {
       for (const item of result) {
         onMessage(item);
       }
