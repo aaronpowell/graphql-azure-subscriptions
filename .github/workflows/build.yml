@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build_signalr:
     defaults:
       run:
         working-directory: packages/graphql-signalr-subscriptions
@@ -25,43 +25,60 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run lint
-    - run: npm run build:all
+    - run: npm run build
     # TODO - tests
     # - run: npm test
+    - run: npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
+    - run: npm pack
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: package-signalr
+        path: "packages/graphql-signalr-subscriptions/*.tgz"
 
-  package:
+  build_cosmosdb:
     defaults:
       run:
-        working-directory: packages/graphql-signalr-subscriptions
-    needs: [build]
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
+        working-directory: packages/graphql-cosmosdb-subscriptions
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        node-version: [10.x, 12.x, 14.x]
 
-      - run: npm ci
-      - run: npm run build
-      - run: npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
-      - run: npm pack
-      - name: Upload
-        uses: actions/upload-artifact@v2
-        with:
-            name: package
-            path: "packages/graphql-signalr-subscriptions/*.tgz"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run build
+    # TODO - tests
+    # - run: npm test
+    - run: npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
+    - run: npm pack
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: package-cosmosdb
+        path: "packages/graphql-cosmosdb-subscriptions/*.tgz"
 
   publish:
     name: "Publish to GitHub Packages"
-    needs: [package]
+    needs: [build_cosmosdb, build_signalr]
     runs-on: ubuntu-18.04
     if: github.repository_owner == 'aaronpowell' # && github.token != ''
     steps:
-    - name: Upload
+    - name: Download (SignalR)
       uses: actions/download-artifact@v2
       with:
-          name: package
+          name: package-signalr
+    - name: Download (CosmosDB)
+      uses: actions/download-artifact@v2
+      with:
+          name: package-cosmosdb
     - uses: actions/setup-node@v1
       with:
         node-version: 14.x
