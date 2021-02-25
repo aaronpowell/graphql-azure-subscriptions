@@ -24,6 +24,7 @@ jobs:
 
     - name: Build
       run: |
+        ls ../../node_modules/.bin
         npm ci
         npm run lint
         npm run build
@@ -60,6 +61,7 @@ jobs:
 
     - name: Build
       run: |
+        ls ../../node_modules/.bin
         npm ci
         npm run lint
         npm run build
