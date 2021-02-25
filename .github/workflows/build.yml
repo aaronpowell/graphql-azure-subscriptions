@@ -86,6 +86,8 @@ jobs:
         scope: "@aaronpowell"
     - run: echo "registry=https://npm.pkg.github.com/@aaronpowell" >> .npmrc
     - run: npm publish $(ls *cosmos*.tgz) --access public
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - run: npm publish $(ls *signalr*.tgz) --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
