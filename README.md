@@ -1,57 +1,20 @@
 # GraphQL Azure Subscription libraries
 
+[![CI build](https://github.com/aaronpowell/graphql-azure-subscriptions/actions/workflows/build.yml/badge.svg)](https://github.com/aaronpowell/graphql-azure-subscriptions/actions/workflows/build.yml) | [![Release build](https://github.com/aaronpowell/graphql-azure-subscriptions/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/aaronpowell/graphql-azure-subscriptions/actions/workflows/npm-publish.yml) | ![npm - SignalR package](https://img.shields.io/npm/v/@aaronpowell/graphql-signalr-subscriptions?label=%40aaronpowell%2Fgraphql-signalr-subscriptions) | ![npm - CosmosDB package](https://img.shields.io/npm/v/@aaronpowell/graphql-cosmosdb-subscriptions?label=%40aaronpowell%2Fgraphql-cosmosdb-subscriptions)
+
 This repo contains the different libraries for working with the [Apollo GraphQL Subscription model](https://www.apollographql.com/docs/apollo-server/data/subscriptions) from Azure services.
 
 ## SignalR
 
-[Azure SignalR Service](https://azure.microsoft.com/services/signalr-service/?WT.mc_id=javascript-0000-aapowell) provides real-time messaging via websockets without needing to setup your own service.
+[Azure SignalR Service](https://azure.microsoft.com/services/signalr-service/?WT.mc_id=javascript-17899-aapowell) provides real-time messaging via websockets without needing to setup your own service.
 
-The package, `@aaronpowell/graphql-signalr-subscriptions` provides integration with GraphQL Subscriptions, underpinned by SignalR Service.
+The package, `@aaronpowell/graphql-signalr-subscriptions` provides integration with GraphQL Subscriptions, underpinned by SignalR Service. Learn more at [`packages/graphql-signalr-subscriptions`](packages/graphql-signalr-subscriptions).
 
-### Installation
+## CosmosDB Change Feed
 
-Install via npm or GitHub Packages:
+[Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/?WT.mc_id=javascript-17901-aapowell) provides a [Change Feed](https://docs.microsoft.com/azure/cosmos-db/change-feed?WT.mc_id=javascript-17901-aapowell) of data that is changed within a collection.
 
-```bash
-$> npm install --save @aaronpowell/graphql-signalr-subscriptions
-```
-
-### Usage
-
-You'll need a SignalR Service account (if you don't have an Azure account [sign up for free](https://azure.microsoft.com/free/?WT.mc_id=javascript-0000-aapowell)). Copy the connection string and provide it when you create an instance of `SignalRPubSub`:
-
-```typescript
-import { SignalRPubSub } from "@aaronpowell/graphql-signalr-subscriptions";
-
-const signalrPubSub = new SignalRPubSub("<connection string>");
-```
-
-When your server is ready, you can start the pubsub client:
-
-```typescript
-signalrPubSub
-  .start()
-  .then(() => console.log("SignalR PubSub is up and running"))
-  .catch((error) => console.error(error));
-```
-
-From within a resolver, you use it the same as any other pubsub implementation:
-
-```typescript
-export const resolvers = {
-  Query: {
-    hello() {
-      signalrPubSub.publish("TESTING", { getMessage: "Hello I'm a message" });
-      return "Some message";
-    },
-  },
-  Subscription: {
-    getMessage: {
-      subscribe: () => signalrPubSub.asyncIterator(["TESTING"]),
-    },
-  },
-};
-```
+The package, `@aaronpowell/graphql-cosmosdb-subscriptions` provides integration with GraphQL Subscriptions, exposing the CosmosDB Change Feed to consumers. Learn more at [`packages/graphql-cosmosdb-subscriptions`](packages/graphql-cosmosdb-subscriptions).
 
 ## License
 
