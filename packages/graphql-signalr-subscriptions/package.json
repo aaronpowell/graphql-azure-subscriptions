@@ -17,7 +17,8 @@
     "watch": "tsc -w",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "postinstall": "cd ../../ && npm ci"
   },
   "keywords": [
     "azure",
