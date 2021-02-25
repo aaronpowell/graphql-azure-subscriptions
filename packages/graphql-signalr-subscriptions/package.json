@@ -12,7 +12,8 @@
   "scripts": {
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "build": "npm run build:esm && npm run build:cjs",
+    "build": "concurrently 'npm:build:esm' 'npm:build:cjs'",
+    "prebuild": "npm run clean",
     "watch": "tsc -w",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
@@ -32,26 +33,13 @@
   "description": "A GraphQL subscriptions library using Azure SignalR Service",
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/node-fetch": "^2.5.8",
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
-    "@typescript-eslint/parser": "^4.15.1",
-    "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "husky": "^5.0.9",
-    "prettier": "^2.2.1",
-    "typescript": "^4.1.5"
+    "@types/node-fetch": "^2.5.8"
   },
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
-    "graphql-subscriptions": "^1.2.0",
+    "graphql-subscriptions": "1.2.0",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   },
   "repository": {
     "type": "git",
