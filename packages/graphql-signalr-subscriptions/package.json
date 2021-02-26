@@ -33,7 +33,15 @@
   "description": "A GraphQL subscriptions library using Azure SignalR Service",
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/node-fetch": "^2.5.8"
+    "@types/node-fetch": "^2.5.8",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "concurrently": "^6.0.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.5"
   },
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",

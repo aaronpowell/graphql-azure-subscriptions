@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build_signalr:
@@ -14,34 +14,33 @@ jobs:
         os: [ubuntu-18.04]
         node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install shared deps
-      run: npm ci
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install shared deps
+        run: npm ci
 
-    - name: Build
-      run: |
-        ls ../../node_modules/.bin
-        npm ci
-        npm run lint
-        npm run build
-        # TODO - tests
-        # npm test
-      working-directory: packages/graphql-signalr-subscriptions
+      - name: Build
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+          # TODO - tests
+          # npm test
+        working-directory: packages/graphql-signalr-subscriptions
 
-    - name: Package
-      run: |
-        npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
-        npm pack
-      working-directory: packages/graphql-signalr-subscriptions
-    - name: Upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: package-signalr
-        path: "packages/graphql-signalr-subscriptions/*.tgz"
+      - name: Package
+        run: |
+          npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
+          npm pack
+        working-directory: packages/graphql-signalr-subscriptions
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: package-signalr
+          path: "packages/graphql-signalr-subscriptions/*.tgz"
 
   build_cosmosdb:
     runs-on: ${{ matrix.os }}
@@ -51,35 +50,35 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install shared deps
-      run: npm ci
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install shared deps
+        run: npm ci
 
-    - name: Build
-      run: |
-        ls ../../node_modules/.bin
-        npm ci
-        npm run lint
-        npm run build
-        # TODO - tests
-        # npm test
-      working-directory: packages/graphql-cosmosdb-subscriptions
+      - name: Build
+        run: |
+          ls ../../node_modules/.bin
+          npm ci
+          npm run lint
+          npm run build
+          # TODO - tests
+          # npm test
+        working-directory: packages/graphql-cosmosdb-subscriptions
 
-    - name: Package
-      run: |
-        npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
-        npm pack
-      working-directory: packages/graphql-cosmosdb-subscriptions
+      - name: Package
+        run: |
+          npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
+          npm pack
+        working-directory: packages/graphql-cosmosdb-subscriptions
 
-    - name: Upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: package-cosmosdb
-        path: "packages/graphql-cosmosdb-subscriptions/*.tgz"
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: package-cosmosdb
+          path: "packages/graphql-cosmosdb-subscriptions/*.tgz"
 
   publish:
     name: "Publish to GitHub Packages"
@@ -87,23 +86,23 @@ jobs:
     runs-on: ubuntu-18.04
     if: github.repository_owner == 'aaronpowell' # && github.token != ''
     steps:
-    - name: Download (SignalR)
-      uses: actions/download-artifact@v2
-      with:
+      - name: Download (SignalR)
+        uses: actions/download-artifact@v2
+        with:
           name: package-signalr
-    - name: Download (CosmosDB)
-      uses: actions/download-artifact@v2
-      with:
+      - name: Download (CosmosDB)
+        uses: actions/download-artifact@v2
+        with:
           name: package-cosmosdb
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
-        registry-url: https://npm.pkg.github.com/
-        scope: "@aaronpowell"
-    - run: echo "registry=https://npm.pkg.github.com/@aaronpowell" >> .npmrc
-    - run: npm publish $(ls *cosmos*.tgz) --access public
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    - run: npm publish $(ls *signalr*.tgz) --access public
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+          registry-url: https://npm.pkg.github.com/
+          scope: "@aaronpowell"
+      - run: echo "registry=https://npm.pkg.github.com/@aaronpowell" >> .npmrc
+      - run: npm publish $(ls *cosmos*.tgz) --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: npm publish $(ls *signalr*.tgz) --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
