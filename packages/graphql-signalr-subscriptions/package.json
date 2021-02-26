@@ -1,7 +1,7 @@
 {
   "name": "@aaronpowell/graphql-signalr-subscriptions",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "./dist/esm/SignalRPubSub.js",
   "types": "./dist/esm/SignalRPubSub.d.ts",
   "exports": {

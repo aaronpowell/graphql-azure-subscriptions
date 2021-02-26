@@ -1,10 +1,15 @@
 # Changelog for graphql-azure-subscriptions
 
-## [Unreleased]
+## 0.2.0 - 2021-02-26
+
+A new package has been added, subscription to CosmosDB change feeds!
 
 ### @aaronpowell/graphql-signalr-subscriptions
 
-- Version Bump
+#### Fixed
+
+- TypeScript definitions weren't working
+- Missing readme
 
 ### @aaronpowell/graphql-cosmosdb-subscriptions
 
