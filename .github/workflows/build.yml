@@ -13,15 +13,15 @@ jobs:
       matrix:
         os: [ubuntu-18.04]
         node-version: [10.x, 12.x, 14.x]
+    defaults:
+      run:
+        working-directory: packages/graphql-signalr-subscriptions
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install shared deps
-        run: npm ci
-
       - name: Build
         run: |
           npm ci
@@ -29,13 +29,12 @@ jobs:
           npm run build
           # TODO - tests
           # npm test
-        working-directory: packages/graphql-signalr-subscriptions
 
       - name: Package
         run: |
           npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
           npm pack
-        working-directory: packages/graphql-signalr-subscriptions
+
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
@@ -48,6 +47,9 @@ jobs:
       matrix:
         os: [ubuntu-18.04]
         node-version: [10.x, 12.x, 14.x]
+    defaults:
+      run:
+        working-directory: packages/graphql-cosmosdb-subscriptions
 
     steps:
       - uses: actions/checkout@v2
@@ -55,24 +57,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install shared deps
-        run: npm ci
-
       - name: Build
         run: |
-          ls ../../node_modules/.bin
           npm ci
           npm run lint
           npm run build
           # TODO - tests
           # npm test
-        working-directory: packages/graphql-cosmosdb-subscriptions
 
       - name: Package
         run: |
           npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
           npm pack
-        working-directory: packages/graphql-cosmosdb-subscriptions
 
       - name: Upload
         uses: actions/upload-artifact@v2
