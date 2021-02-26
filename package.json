@@ -1,14 +1,10 @@
 {
   "private": true,
   "devDependencies": {
+    "concurrently": "^6.0.0",
     "husky": "^5.0.9",
     "prettier": "^2.2.1",
     "typescript": "^4.1.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   },
   "scripts": {
     "lint:cosmos": "cd packages/graphql-cosmosdb-subscriptions && npm run lint",
@@ -16,6 +12,7 @@
     "lint": "concurrently -c 'bgGreen.dim,bgCyan.dim' 'npm:lint:cosmos' 'npm:lint:signalr'",
     "build:cosmos": "cd packages/graphql-cosmosdb-subscriptions && npm run build",
     "build:signalr": "cd packages/graphql-signalr-subscriptions && npm run build",
-    "build": "concurrently -c 'bgGreen.dim,bgCyan.dim' 'npm:build:cosmos' 'npm:build:signalr'"
+    "build": "concurrently -c 'bgGreen.dim,bgCyan.dim' 'npm:build:cosmos' 'npm:build:signalr'",
+    "postinstall": "husky install"
   }
 }
