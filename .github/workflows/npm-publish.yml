@@ -27,8 +27,8 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
-            name: package-signalr
-            path: "packages/graphql-signalr-subscriptions/*.tgz"
+          name: package-signalr
+          path: "packages/graphql-signalr-subscriptions/*.tgz"
   build_cosmos:
     runs-on: ubuntu-latest
     defaults:
@@ -47,11 +47,12 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
-            name: package-cosmosdb
-            path: "packages/graphql-cosmosdb-subscriptions/*.tgz"
+          name: package-cosmosdb
+          path: "packages/graphql-cosmosdb-subscriptions/*.tgz"
 
   build:
     runs-on: ubuntu-latest
+    needs: [build_cosmos, build_signalr]
     steps:
       - run: echo "tag=${GITHUB_REF##*/v}" >> $GITHUB_ENV
       - name: Create Release
@@ -77,9 +78,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: 'aaronpowell-graphql-signalr-subscriptions-${{ env.tag }}.tgz'
-          asset_name: '@aaronpowell/graphql-signalr-subscriptions-${{ env.tag }}.tgz'
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: "aaronpowell-graphql-signalr-subscriptions-${{ env.tag }}.tgz"
+          asset_name: "@aaronpowell/graphql-signalr-subscriptions-${{ env.tag }}.tgz"
           asset_content_type: application/zip
 
       - name: Download cosmosdb package
@@ -92,17 +93,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: 'aaronpowell-graphql-cosmosdb-subscriptions-${{ env.tag }}.tgz'
-          asset_name: '@aaronpowell/graphql-cosmosdb-subscriptions-${{ env.tag }}.tgz'
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: "aaronpowell-graphql-cosmosdb-subscriptions-${{ env.tag }}.tgz"
+          asset_name: "@aaronpowell/graphql-cosmosdb-subscriptions-${{ env.tag }}.tgz"
           asset_content_type: application/zip
 
       - run: echo ${{ steps.create_release.outputs.id }} >> release.txt
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
-            name: release_id
-            path: packages/graphql-signalr-subscriptions/release.txt
+          name: release_id
+          path: packages/graphql-signalr-subscriptions/release.txt
 
   release:
     needs: build
@@ -113,7 +114,7 @@ jobs:
       - name: Download package
         uses: actions/download-artifact@v2
         with:
-            name: release_id
+          name: release_id
       - run: echo "release_id=$(cat release.txt)" >> $GITHUB_ENV
       - name: Publish release
         uses: actions/github-script@v3
@@ -133,11 +134,11 @@ jobs:
       - name: Download package (SignalR)
         uses: actions/download-artifact@v2
         with:
-            name: package-signalr
+          name: package-signalr
       - name: Download package (CosmosDB)
         uses: actions/download-artifact@v2
         with:
-            name: package-cosmosdb
+          name: package-cosmosdb
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -156,11 +157,11 @@ jobs:
       - name: Download package (SignalR)
         uses: actions/download-artifact@v2
         with:
-            name: package-signalr
+          name: package-signalr
       - name: Download package (CosmosDB)
         uses: actions/download-artifact@v2
         with:
-            name: package-cosmosdb
+          name: package-cosmosdb
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
