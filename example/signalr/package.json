@@ -15,7 +15,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@aaronpowell/graphql-signalr-subscriptions": "file:../../packages/graphql-signalr-subscriptions",
+    "@aaronpowell/graphql-signalr-subscriptions": "*",
     "@graphql-tools/graphql-file-loader": "^6.2.7",
     "@graphql-tools/load": "^6.2.7",
     "@graphql-tools/schema": "^7.1.3",

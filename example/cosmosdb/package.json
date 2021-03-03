@@ -15,7 +15,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@aaronpowell/graphql-cosmosdb-subscriptions": "file:../../packages/graphql-cosmosdb-subscriptions",
+    "@aaronpowell/graphql-cosmosdb-subscriptions": "*",
     "@azure/cosmos": "^3.9.5",
     "@graphql-tools/graphql-file-loader": "^6.2.7",
     "@graphql-tools/load": "^6.2.7",
