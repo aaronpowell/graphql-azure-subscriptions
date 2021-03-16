@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import fetch from "node-fetch";
-import signalr from "@aspnet/signalr";
+import signalr, { LogLevel } from "@microsoft/signalr";
 
 export class SignalRClient {
   private static defaultHubName = "graphql";
