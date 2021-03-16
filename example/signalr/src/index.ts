@@ -27,6 +27,6 @@ server.listen().then(({ url }) => {
 
   signalrPubSub
     .start()
-    .then(() => console.log("signalr up and running"))
+    .then(() => console.log("🚀 SignalR up and running"))
     .catch((err: any) => console.error(err));
 });
