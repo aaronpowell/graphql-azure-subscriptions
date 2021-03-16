@@ -1,6 +1,6 @@
 {
   "name": "@aaronpowell/graphql-cosmosdb-subscriptions",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A GraphQL subscription library that uses the CosmosDB change feed as the event source",
   "main": "./dist/esm/CosmosDBPubSub.js",
   "types": "./dist/esm/CosmosDBPubSub.d.ts",
