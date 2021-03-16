@@ -9,7 +9,8 @@ export class SignalRClient {
   constructor(
     private endpoint: string,
     private accessKey: string,
-    private hubName: string
+    private hubName: string,
+    logLevel: LogLevel = signalr.LogLevel.Information
   ) {
     this.connection = new signalr.HubConnectionBuilder()
       .withUrl(`${endpoint}/client/?hub=${hubName}`, {
@@ -24,11 +25,14 @@ export class SignalRClient {
           return accessToken;
         },
       })
-      .configureLogging(signalr.LogLevel.Information)
+      .configureLogging(logLevel)
       .build();
   }
 
-  static fromConnectionString(connectionString?: string): SignalRClient {
+  static fromConnectionString(
+    connectionString?: string,
+    logLevel: LogLevel = signalr.LogLevel.Information
+  ): SignalRClient {
     if (!connectionString) {
       throw "No SignalR Service connection string found.";
     }
@@ -41,22 +45,16 @@ export class SignalRClient {
       throw "Could not parse SignalR Service connection string.";
     }
 
-    return new SignalRClient(endpoint, accessKey, this.defaultHubName);
+    return new SignalRClient(
+      endpoint,
+      accessKey,
+      this.defaultHubName,
+      logLevel
+    );
   }
 
-  public async send(
-    eventName: string,
-    eventData?: unknown,
-    options?: SendOptions
-  ): Promise<void> {
-    let hubUrl = `${this.endpoint}/api/v1/hubs/${this.hubName}`;
-
-    if (options?.userId) {
-      hubUrl += `/users/${options.userId}`;
-    } else if (options?.groupName) {
-      hubUrl += `/groups/${options.groupName}`;
-    }
-
+  public async send(eventName: string, eventData?: unknown): Promise<void> {
+    const hubUrl = `${this.endpoint}/api/v1/hubs/${this.hubName}`;
     const accessToken = this.generateAccessToken(hubUrl);
 
     const payload: SendPayload = {
@@ -80,6 +78,10 @@ export class SignalRClient {
 
   public on(triggerName: string, handler: (...args: unknown[]) => void) {
     this.connection.on(triggerName, handler);
+  }
+
+  public off(triggerName: string, handler: (...args: unknown[]) => void) {
+    this.connection.off(triggerName, handler);
   }
 
   generateNegotiatePayload(userId?: string): NegotiatePayload {
@@ -121,11 +123,6 @@ interface NegotiatePayload {
 interface SendPayload {
   target: string;
   arguments: unknown[];
-  userId?: string;
-  groupName?: string;
-}
-
-interface SendOptions {
   userId?: string;
   groupName?: string;
 }
