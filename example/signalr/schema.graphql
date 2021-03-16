@@ -4,6 +4,7 @@ type Query {
 
 type Subscription {
   getMessage: String!
+  getMessage2: String
 }
 
 schema {

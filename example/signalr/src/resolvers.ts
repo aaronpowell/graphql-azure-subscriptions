@@ -10,13 +10,20 @@ export const signalrPubSub = new SignalRPubSub(
 export const resolvers = {
   Query: {
     hello() {
-      signalrPubSub.publish("TESTING", { getMessage: "Hello I'm a message" });
+      signalrPubSub.publish("MESSAGE", { getMessage: "Hello I'm a message" });
+      signalrPubSub.publish("MESSAGE2", {
+        getMessage: "Hello I'm a message2",
+        getMessage2: "Hello I came from elsewhere",
+      });
       return "Some message";
     },
   },
   Subscription: {
     getMessage: {
-      subscribe: () => signalrPubSub.asyncIterator(["TESTING"]),
+      subscribe: () => signalrPubSub.asyncIterator(["MESSAGE"]),
+    },
+    getMessage2: {
+      subscribe: () => signalrPubSub.asyncIterator(["MESSAGE", "MESSAGE2"]),
     },
   },
 };
