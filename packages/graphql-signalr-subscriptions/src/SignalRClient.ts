@@ -25,6 +25,7 @@ export class SignalRClient {
           return accessToken;
         },
       })
+      .withAutomaticReconnect()
       .configureLogging(logLevel)
       .build();
   }
